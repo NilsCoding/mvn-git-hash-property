@@ -29,7 +29,7 @@ To execute the Mojo in your build process, it needs to be configured in the buil
 <plugin>
     <groupId>io.github.nilscoding.maven</groupId>
     <artifactId>mvn-git-hash-property</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <executions>
         <execution>
             <phase>initialize</phase>
@@ -56,7 +56,7 @@ The default phase is `initialize`.
 
 The Mojo can also be invoked via command line (needs to be installed in Maven first, see above):
 ```bash
-mvn io.github.nilscoding.maven:mvn-git-hash-property:1.0.0:git-hash-property -DpropertyName=git_hash -DshortHash=false
+mvn io.github.nilscoding.maven:mvn-git-hash-property:1.1.0:git-hash-property -DpropertyName=git_hash -DshortHash=false
 ```
 
 The call must be done in a command shell and the current directory must contain a Maven project. All configuration options are also optional when using the command line.
