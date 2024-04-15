@@ -6,7 +6,7 @@
 
     <groupId>io.github.nilscoding.maven</groupId>
     <artifactId>mvn-git-hash-property</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <packaging>maven-plugin</packaging>
 
     <name>mvn-git-hash-property</name>

@@ -42,6 +42,7 @@ To execute the Mojo in your build process, it needs to be configured in the buil
                 <propertyPrefix></propertyPrefix>
                 <propertySuffix></propertySuffix>
                 <fallbackValue>unknown</fallbackValue>
+                <branchPropertyName>gitBranch</branchPropertyName>
             </configuration>
         </execution>
     </executions>
@@ -96,6 +97,15 @@ If property `shortHash` evaluates to `true`, then the GIT hash will be shortened
 
 When the target project does not contain any GIT information or the GIT hash cannot be determined for other reasons, you can optionally specify the `fallbackValue` property and then this value will be used for the property value.
 This can be useful when the GIT hash is used in filtered resources because the non-existing variable would then not be replaced and a `${git_hash}` text can be present in the resource content.
+
+### branchPropertyName
+
+Since version 1.1.0 you can optionally specify `branchPropertyName` that will be filled with the branch name.
+If no branch name was detected, the fallback value from `fallbackBranchValue` will be used if not empty itself.
+
+### fallbackBranchValue
+
+Since version 1.1.0 you can optionally define a fallback value using `fallbackBranchValue` for when no branch name was detected.
 
 
 ### copyright / license

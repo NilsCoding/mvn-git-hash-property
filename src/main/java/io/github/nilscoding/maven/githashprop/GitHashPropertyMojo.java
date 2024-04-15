@@ -30,6 +30,11 @@ public class GitHashPropertyMojo extends AbstractMojo {
     protected static final int REF_PREFIX_LEN = 5;
 
     /**
+     * Length of "refs/heads/" prefix.
+     */
+    protected static final int REFS_HEADS_PREFIX_LEN = 11;
+
+    /**
      * Maven project.
      */
     @Parameter(defaultValue = "${project}", readonly = true, required = true)
@@ -66,6 +71,18 @@ public class GitHashPropertyMojo extends AbstractMojo {
     private String fallbackValue;
 
     /**
+     * Nome of branch property.
+     */
+    @Parameter(property = "branchPropertyName")
+    private String branchPropertyName;
+
+    /**
+     * Fallback value for branch value.
+     */
+    @Parameter(property = "fallbackBranchValue")
+    private String fallbackBranchValue;
+
+    /**
      * Executes the Maven Mojo.
      * @throws MojoExecutionException Mojo execution exception
      * @throws MojoFailureException   Mojo failure exception
@@ -77,6 +94,7 @@ public class GitHashPropertyMojo extends AbstractMojo {
 
         boolean useFallbackValue = (this.fallbackValue != null);
         String gitHash = null;
+        String branchName = null;
 
         // read head reference
         String headInfo = readFirstLineFromFile(".git" + File.separator + "HEAD");
@@ -106,6 +124,9 @@ public class GitHashPropertyMojo extends AbstractMojo {
                         log.info("ref entry is empty in HEAD file, will use fallback value");
                     }
                 } else {
+                    if (refInfo.startsWith("refs/heads/")) {
+                        branchName = refInfo.substring(REFS_HEADS_PREFIX_LEN);
+                    }
                     String gitHashFile = ".git" + File.separator + refInfo;
                     gitHash = readFirstLineFromFile(gitHashFile);
                     if (gitHash == null) {
@@ -143,6 +164,19 @@ public class GitHashPropertyMojo extends AbstractMojo {
         }
         this.project.getProperties().put(propName, propertyValue);
         log.info("GIT hash '" + gitHash + "' assigned to property '" + propName + "'");
+        if ((this.branchPropertyName != null) && (this.branchPropertyName.isEmpty() == false)) {
+
+            if ((branchName != null) && (branchName.isEmpty() == false)) {
+                this.project.getProperties().put(this.branchPropertyName, branchName);
+                log.info("GIT branch name '" + branchName + "' assigned "
+                        + "to property '" + this.branchPropertyName + "'");
+            } else if ((this.fallbackBranchValue != null) && (this.fallbackBranchValue.isEmpty() == false)) {
+                this.project.getProperties().put(this.branchPropertyName, this.fallbackBranchValue);
+                log.info("GIT branch fallback '" + branchName + "' assigned "
+                        + "to property '" + this.branchPropertyName + "'");
+
+            }
+        }
     }
 
     /**
